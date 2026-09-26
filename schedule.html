@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shorelake SC — Fall 2026 Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --turf-1: #1F5C46;
+    --turf-2: #2E7D53;
+    --turf-3: #6FBE8C;
+    --chalk: #F6F4EC;
+    --ink: #16241D;
+    --line: #D8E4DA;
+    --amber: #E0A63B;
+    --card-bg: #FFFFFF;
+    --shadow: 0 1px 2px rgba(22,36,29,0.06);
+    --radius: 10px;
+    color-scheme: light dark;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --chalk: #10190F;
+      --ink: #EAF1EA;
+      --line: #24352A;
+      --card-bg: #182319;
+      --turf-3: #4FA477;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --chalk: #10190F;
+    --ink: #EAF1EA;
+    --line: #24352A;
+    --card-bg: #182319;
+    --turf-3: #4FA477;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--chalk);
+    color: var(--ink);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.4;
+  }
+
+  header.top {
+    background: var(--turf-1);
+    color: #F6F4EC;
+    padding: env(safe-area-inset-top, 0px) 0 0 0;
+  }
+  .top-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 22px 20px 18px;
+  }
+  .top-inner h1 {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .top-inner p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: #CFE6D6;
+    font-weight: 500;
+  }
+
+  .controls {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: var(--chalk);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 20px;
+  }
+  .controls-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .seg {
+    display: flex;
+    gap: 6px;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 4px;
+  }
+  .seg button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 9px 8px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink);
+    opacity: 0.55;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .seg button.active {
+    background: var(--turf-2);
+    color: #fff;
+    opacity: 1;
+  }
+  .subfilter {
+    margin-top: 10px;
+    display: none;
+  }
+  .subfilter.show { display: block; }
+  .subfilter select {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 18px 20px 8px;
+  }
+
+  .group-heading {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--turf-2);
+    margin: 22px 0 8px;
+  }
+  .group-heading:first-child { margin-top: 4px; }
+
+  .game-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .game-when {
+    flex: 0 0 auto;
+    width: 64px;
+    text-align: center;
+  }
+  .game-when .d {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--turf-2);
+    text-transform: uppercase;
+  }
+  .game-when .t {
+    font-size: 0.78rem;
+    font-weight: 600;
+    opacity: 0.75;
+  }
+  .game-mid {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .matchup {
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .matchup .vs {
+    font-weight: 500;
+    opacity: 0.5;
+    font-size: 0.82rem;
+    padding: 0 4px;
+  }
+  .meta-row {
+    margin-top: 2px;
+    font-size: 0.78rem;
+    opacity: 0.65;
+    font-weight: 600;
+  }
+  .field-pill {
+    flex: 0 0 auto;
+    background: var(--turf-3);
+    color: #0E2018;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 5px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .field-pill.tbd { background: var(--amber); }
+
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    opacity: 0.6;
+    font-weight: 600;
+  }
+
+  .qr-section {
+    max-width: 720px;
+    margin: 30px auto 0;
+    padding: 24px 20px calc(30px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .qr-section h2 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+  }
+  .qr-section p {
+    font-size: 0.82rem;
+    opacity: 0.65;
+    margin: 0 0 14px;
+    font-weight: 500;
+  }
+  #qrcode {
+    display: inline-block;
+    padding: 10px;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  #qrcode img { display: block; }
+  .qr-url {
+    margin-top: 10px;
+    font-size: 0.74rem;
+    opacity: 0.5;
+    word-break: break-all;
+    font-weight: 600;
+  }
+
+  @media (max-width: 380px) {
+    .game-when { width: 54px; }
+    .matchup { font-size: 0.92rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <h1>Shorelake Soccer Club</h1>
+    <p>Fall 2026 Game Schedule</p>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="seg" role="tablist" aria-label="Sort schedule">
+      <button data-mode="date" class="active">Date</button>
+      <button data-mode="age">Age</button>
+      <button data-mode="team">Team</button>
+    </div>
+    <div class="subfilter" id="teamFilterWrap">
+      <select id="teamFilter">
+        <option value="">Choose a team…</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<div class="qr-section">
+  <h2>Share this schedule</h2>
+  <p>Scan to open this page on any phone</p>
+  <div id="qrcode"></div>
+  <div class="qr-url" id="qrUrl"></div>
+</div>
+
+<script>
+// ---------- Data ----------
+// Field labels: U5 → Field 1, U6 → Field 2 or 3 (as scheduled), BU7/GU7 → Field 4
+const RAW_GAMES = [
+  // U5 — Field 1
+  ["U5","2026-09-12","10:00 AM","Leaping Peacocks","Cheetahs","1"],
+  ["U5","2026-09-12","11:00 AM","Strykers","Pink Bearnicorn Frogs","1"],
+  ["U5","2026-09-12","1:00 PM","The Bears","Keeton","1"],
+  ["U5","2026-09-12","2:00 PM","Dinos","Mighty Mudskippers","1"],
+  ["U5","2026-09-19","10:00 AM","The Bears","Terrific Tigers","1"],
+  ["U5","2026-09-19","11:00 AM","Leaping Peacocks","Mighty Mudskippers","1"],
+  ["U5","2026-09-19","1:00 PM","Dinos","Pink Bearnicorn Frogs","1"],
+  ["U5","2026-09-19","2:00 PM","Cheetahs","Keeton","1"],
+  ["U5","2026-09-26","10:00 AM","Strykers","Terrific Tigers","1"],
+  ["U5","2026-09-26","11:00 AM","The Bears","Leaping Peacocks","1"],
+  ["U5","2026-09-26","1:00 PM","Pink Bearnicorn Frogs","Mighty Mudskippers","1"],
+  ["U5","2026-09-26","2:00 PM","Dinos","Cheetahs","1"],
+  ["U5","2026-10-03","10:00 AM","Mighty Mudskippers","Strykers","1"],
+  ["U5","2026-10-03","11:00 AM","Pink Bearnicorn Frogs","Cheetahs","1"],
+  ["U5","2026-10-03","1:00 PM","Terrific Tigers","Keeton","1"],
+  ["U5","2026-10-03","2:00 PM","Dinos","The Bears","1"],
+  ["U5","2026-10-10","10:00 AM","Mighty Mudskippers","Cheetahs","1"],
+  ["U5","2026-10-10","11:00 AM","Terrific Tigers","Leaping Peacocks","1"],
+  ["U5","2026-10-10","1:00 PM","Keeton","Strykers","1"],
+  ["U5","2026-10-10","2:00 PM","Pink Bearnicorn Frogs","The Bears","1"],
+  ["U5","2026-10-17","10:00 AM","Keeton","Leaping Peacocks","1"],
+  ["U5","2026-10-17","11:00 AM","Mighty Mudskippers","The Bears","1"],
+  ["U5","2026-10-17","1:00 PM","Terrific Tigers","Dinos","1"],
+  ["U5","2026-10-17","2:00 PM","Strykers","Cheetahs","1"],
+  ["U5","2026-10-24","10:00 AM","Strykers","Leaping Peacocks","1"],
+  ["U5","2026-10-24","11:00 AM","Pink Bearnicorn Frogs","Terrific Tigers","1"],
+  ["U5","2026-10-24","1:00 PM","Cheetahs","The Bears","1"],
+  ["U5","2026-10-24","2:00 PM","Keeton","Dinos","1"],
+  ["U5","2026-10-31","10:00 AM","Keeton","Pink Bearnicorn Frogs","1"],
+  ["U5","2026-10-31","11:00 AM","The Bears","Strykers","1"],
+  ["U5","2026-10-31","1:00 PM","Leaping Peacocks","Dinos","1"],
+  ["U5","2026-10-31","2:00 PM","Mighty Mudskippers","Terrific Tigers","1"],
+  ["U5","2026-11-07","10:00 AM","Strykers","Dinos","1"],
+  ["U5","2026-11-07","11:00 AM","Cheetahs","Terrific Tigers","1"],
+  ["U5","2026-11-07","1:00 PM","Pink Bearnicorn Frogs","Leaping Peacocks","1"],
+  ["U5","2026-11-07","2:00 PM","Keeton","Mighty Mudskippers","1"],
+
+  // U6 — Fields 2/3
+  ["U6","2026-09-12","9:00 AM","Las Aguilas","Sockeyes","2"],
+  ["U6","2026-09-12","9:00 AM","Soccer Baseballs United","Kicking Cheetahs","3"],
+  ["U6","2026-09-12","1:00 PM","Scorpions","Lightning Cheetahs","2"],
+  ["U6","2026-09-12","2:00 PM","Sharks","Happy Oranges","3"],
+  ["U6","2026-09-12","2:00 PM","The Cool Cool Soccer Team","Flying Dragons","2"],
+  ["U6","2026-09-19","9:00 AM","Sockeyes","Kicking Cheetahs","2"],
+  ["U6","2026-09-19","10:00 AM","Lightning Cheetahs","Las Aguilas","3"],
+  ["U6","2026-09-19","12:00 PM","Scorpions","Happy Oranges","2"],
+  ["U6","2026-09-19","1:00 PM","Soccer Baseballs United","Flying Dragons","3"],
+  ["U6","2026-09-19","1:00 PM","Sharks","The Cool Cool Soccer Team","2"],
+  ["U6","2026-09-26","9:00 AM","Soccer Baseballs United","Sharks","2"],
+  ["U6","2026-09-26","9:00 AM","Lightning Cheetahs","Happy Oranges","3"],
+  ["U6","2026-09-26","1:00 PM","Las Aguilas","Kicking Cheetahs","2"],
+  ["U6","2026-09-26","2:00 PM","Sockeyes","Flying Dragons","3"],
+  ["U6","2026-09-26","2:00 PM","Scorpions","The Cool Cool Soccer Team","2"],
+  ["U6","2026-10-03","9:00 AM","Scorpions","Soccer Baseballs United","2"],
+  ["U6","2026-10-03","10:00 AM","Kicking Cheetahs","Flying Dragons","3"],
+  ["U6","2026-10-03","12:00 PM","Lightning Cheetahs","The Cool Cool Soccer Team","2"],
+  ["U6","2026-10-03","1:00 PM","Sockeyes","Sharks","3"],
+  ["U6","2026-10-03","1:00 PM","Happy Oranges","Las Aguilas","2"],
+  ["U6","2026-10-10","9:00 AM","Happy Oranges","The Cool Cool Soccer Team","2"],
+  ["U6","2026-10-10","9:00 AM","Flying Dragons","Las Aguilas","3"],
+  ["U6","2026-10-10","1:00 PM","Lightning Cheetahs","Soccer Baseballs United","2"],
+  ["U6","2026-10-10","2:00 PM","Kicking Cheetahs","Sharks","3"],
+  ["U6","2026-10-10","2:00 PM","Sockeyes","Scorpions","2"],
+  ["U6","2026-10-17","9:00 AM","Las Aguilas","The Cool Cool Soccer Team","2"],
+  ["U6","2026-10-17","10:00 AM","Flying Dragons","Sharks","3"],
+  ["U6","2026-10-17","12:00 PM","Happy Oranges","Soccer Baseballs United","2"],
+  ["U6","2026-10-17","1:00 PM","Lightning Cheetahs","Sockeyes","3"],
+  ["U6","2026-10-17","1:00 PM","Kicking Cheetahs","Scorpions","2"],
+  ["U6","2026-10-24","9:00 AM","Las Aguilas","Sharks","2"],
+  ["U6","2026-10-24","9:00 AM","The Cool Cool Soccer Team","Soccer Baseballs United","3"],
+  ["U6","2026-10-24","1:00 PM","Flying Dragons","Scorpions","2"],
+  ["U6","2026-10-24","2:00 PM","Kicking Cheetahs","Sockeyes","3"],
+  ["U6","2026-10-24","2:00 PM","Happy Oranges","Lightning Cheetahs","2"],
+  ["U6","2026-10-31","9:00 AM","Sharks","Scorpions","2"],
+  ["U6","2026-10-31","10:00 AM","Flying Dragons","Lightning Cheetahs","3"],
+  ["U6","2026-10-31","12:00 PM","Las Aguilas","Soccer Baseballs United","2"],
+  ["U6","2026-10-31","1:00 PM","Happy Oranges","Kicking Cheetahs","3"],
+  ["U6","2026-10-31","1:00 PM","The Cool Cool Soccer Team","Sockeyes","2"],
+  ["U6","2026-11-07","9:00 AM","Soccer Baseballs United","Lightning Cheetahs","2"],
+  ["U6","2026-11-07","9:00 AM","Sharks","Sockeyes","3"],
+  ["U6","2026-11-07","1:00 PM","The Cool Cool Soccer Team","Kicking Cheetahs","2"],
+  ["U6","2026-11-07","2:00 PM","Flying Dragons","Happy Oranges","3"],
+  ["U6","2026-11-07","2:00 PM","Las Aguilas","Scorpions","2"],
+
+  // Boys U7 — Field 4
+  ["BU7","2026-09-12","11:00 AM","Chocolate Chip Blasters","Golden Army","4"],
+  ["BU7","2026-09-12","1:00 PM","Thunder Monsters","Wolves","4"],
+  ["BU7","2026-09-12","2:00 PM","Firehawks","Kicking Orcas","4"],
+  ["BU7","2026-09-19","9:00 AM","Thunder Monsters","Golden Army","4"],
+  ["BU7","2026-09-19","11:00 AM","Firehawks","Kicking Orcas","4"],
+  ["BU7","2026-09-19","2:00 PM","Wolves","Chocolate Chip Blasters","4"],
+  ["BU7","2026-09-26","9:00 AM","Thunder Monsters","Kicking Orcas","4"],
+  ["BU7","2026-09-26","11:00 AM","Golden Army","Firehawks","4"],
+  ["BU7","2026-09-26","2:00 PM","Wolves","Chocolate Chip Blasters","4"],
+  ["BU7","2026-10-03","9:00 AM","Thunder Monsters","Firehawks","4"],
+  ["BU7","2026-10-03","11:00 AM","Golden Army","Wolves","4"],
+  ["BU7","2026-10-03","2:00 PM","Kicking Orcas","Chocolate Chip Blasters","4"],
+  ["BU7","2026-10-10","11:00 AM","Kicking Orcas","Golden Army","4"],
+  ["BU7","2026-10-10","1:00 PM","Thunder Monsters","Firehawks","4"],
+  ["BU7","2026-10-10","2:00 PM","Chocolate Chip Blasters","Wolves","4"],
+  ["BU7","2026-10-17","9:00 AM","Kicking Orcas","Chocolate Chip Blasters","4"],
+  ["BU7","2026-10-17","11:00 AM","Golden Army","Firehawks","4"],
+  ["BU7","2026-10-17","2:00 PM","Wolves","Thunder Monsters","4"],
+  ["BU7","2026-10-24","9:00 AM","Kicking Orcas","Wolves","4"],
+  ["BU7","2026-10-24","11:00 AM","Chocolate Chip Blasters","Firehawks","4"],
+  ["BU7","2026-10-24","2:00 PM","Golden Army","Thunder Monsters","4"],
+  ["BU7","2026-10-31","9:00 AM","Chocolate Chip Blasters","Golden Army","4"],
+  ["BU7","2026-10-31","11:00 AM","Kicking Orcas","Thunder Monsters","4"],
+  ["BU7","2026-10-31","2:00 PM","Firehawks","Wolves","4"],
+  ["BU7","2026-11-07","9:00 AM","Chocolate Chip Blasters","Thunder Monsters","4"],
+  ["BU7","2026-11-07","11:00 AM","Firehawks","Kicking Orcas","4"],
+  ["BU7","2026-11-07","2:00 PM","Wolves","Golden Army","4"],
+
+  // Girls U7 — Field 4
+  ["GU7","2026-09-12","10:00 AM","Thunder Cats","Kicking Eagles","4"],
+  ["GU7","2026-09-12","12:00 PM","Super Pandas","Rainbow Sharks","4"],
+  ["GU7","2026-09-19","10:00 AM","Rainbow Sharks","The Snow Leopards","4"],
+  ["GU7","2026-09-19","12:00 PM","Thunder Cats","Super Pandas","4"],
+  ["GU7","2026-09-26","10:00 AM","Kicking Eagles","The Snow Leopards","4"],
+  ["GU7","2026-09-26","12:00 PM","Thunder Cats","Rainbow Sharks","4"],
+  ["GU7","2026-10-03","10:00 AM","Thunder Cats","The Snow Leopards","4"],
+  ["GU7","2026-10-03","12:00 PM","Kicking Eagles","Super Pandas","4"],
+  ["GU7","2026-10-10","10:00 AM","Kicking Eagles","Rainbow Sharks","4"],
+  ["GU7","2026-10-10","12:00 PM","Super Pandas","The Snow Leopards","4"],
+  ["GU7","2026-10-17","10:00 AM","Thunder Cats","Kicking Eagles","4"],
+  ["GU7","2026-10-17","12:00 PM","Super Pandas","Rainbow Sharks","4"],
+  ["GU7","2026-10-24","10:00 AM","Thunder Cats","Super Pandas","4"],
+  ["GU7","2026-10-24","12:00 PM","Rainbow Sharks","The Snow Leopards","4"],
+  ["GU7","2026-10-31","10:00 AM","Kicking Eagles","The Snow Leopards","4"],
+  ["GU7","2026-10-31","12:00 PM","Thunder Cats","Rainbow Sharks","4"],
+  ["GU7","2026-11-07","10:00 AM","Thunder Cats","The Snow Leopards","4"],
+  ["GU7","2026-11-07","12:00 PM","Kicking Eagles","Super Pandas","4"],
+];
+
+const AGE_LABELS = { U5: "U5 Co-ed", U6: "U6 Co-ed", BU7: "Boys U7", GU7: "Girls U7" };
+const AGE_ORDER = ["U5","U6","BU7","GU7"];
+
+function to24(t) {
+  const [time, ap] = t.split(" ");
+  let [h, m] = time.split(":").map(Number);
+  if (ap === "PM" && h !== 12) h += 12;
+  if (ap === "AM" && h === 12) h = 0;
+  return h * 60 + m;
+}
+
+const games = RAW_GAMES.map(([age, date, time, home, away, field]) => ({
+  age, date, time, home, away, field,
+  sortKey: date + "T" + String(to24(time)).padStart(4, "0"),
+}));
+
+function fmtDate(iso) {
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString("en-US", { weekday: "short", month: "numeric", day: "numeric" });
+}
+
+// ---------- Rendering ----------
+const main = document.getElementById("main");
+let mode = "date";
+
+function fieldPill(field) {
+  return field === "TBD"
+    ? '<span class="field-pill tbd">Field TBD</span>'
+    : `<span class="field-pill">Field ${field}</span>`;
+}
+
+function gameCard(g) {
+  return `
+    <div class="game-card">
+      <div class="game-when">
+        <div class="d">${fmtDate(g.date)}</div>
+        <div class="t">${g.time}</div>
+      </div>
+      <div class="game-mid">
+        <div class="matchup">${g.home}<span class="vs">vs</span>${g.away}</div>
+        <div class="meta-row">${AGE_LABELS[g.age]}</div>
+      </div>
+      ${fieldPill(g.field)}
+    </div>`;
+}
+
+function renderByDate() {
+  const sorted = [...games].sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+  const byDate = {};
+  sorted.forEach(g => { (byDate[g.date] ||= []).push(g); });
+  let html = "";
+  Object.keys(byDate).sort().forEach(date => {
+    html += `<div class="group-heading">${fmtDate(date)}</div>`;
+    byDate[date].sort((a,b) => a.sortKey.localeCompare(b.sortKey)).forEach(g => html += gameCard(g));
+  });
+  main.innerHTML = html;
+}
+
+function renderByAge() {
+  let html = "";
+  AGE_ORDER.forEach(age => {
+    const list = games.filter(g => g.age === age).sort((a,b) => a.sortKey.localeCompare(b.sortKey));
+    if (!list.length) return;
+    html += `<div class="group-heading">${AGE_LABELS[age]}</div>`;
+    list.forEach(g => html += gameCard(g));
+  });
+  main.innerHTML = html;
+}
+
+function allTeams() {
+  const set = new Set();
+  games.forEach(g => { set.add(g.home); set.add(g.away); });
+  return [...set].sort();
+}
+
+function renderByTeam(team) {
+  if (!team) {
+    main.innerHTML = `<div class="empty">Pick a team above to see its full schedule.</div>`;
+    return;
+  }
+  const list = games
+    .filter(g => g.home === team || g.away === team)
+    .sort((a,b) => a.sortKey.localeCompare(b.sortKey));
+  if (!list.length) {
+    main.innerHTML = `<div class="empty">No games found for ${team}.</div>`;
+    return;
+  }
+  main.innerHTML = `<div class="group-heading">${team} — Full Season</div>` + list.map(gameCard).join("");
+}
+
+function render() {
+  if (mode === "date") renderByDate();
+  else if (mode === "age") renderByAge();
+  else renderByTeam(document.getElementById("teamFilter").value);
+}
+
+// ---------- Controls ----------
+document.querySelectorAll(".seg button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".seg button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    mode = btn.dataset.mode;
+    document.getElementById("teamFilterWrap").classList.toggle("show", mode === "team");
+    render();
+  });
+});
+
+const teamFilter = document.getElementById("teamFilter");
+allTeams().forEach(team => {
+  const opt = document.createElement("option");
+  opt.value = team;
+  opt.textContent = team;
+  teamFilter.appendChild(opt);
+});
+teamFilter.addEventListener("change", render);
+
+render();
+
+// ---------- QR code (self-referencing) ----------
+try {
+  const url = window.location.href;
+  document.getElementById("qrUrl").textContent = url;
+  new QRCode(document.getElementById("qrcode"), {
+    text: url,
+    width: 160,
+    height: 160,
+    colorDark: "#16241D",
+    colorLight: "#ffffff",
+  });
+} catch (e) {
+  document.getElementById("qrcode").textContent = "QR unavailable";
+}
+</script>
+</body>
+</html>
